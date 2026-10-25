@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE APEX GAMBIT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Kanit:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body {
+            background-color: #030305;
+            color: #fff;
+            font-family: 'Kanit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .casino-panel {
+            background: rgba(14, 14, 20, 0.95);
+            border: 1px solid #d4af37;
+            border-top: 4px solid #b30000;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 380px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+        }
+        .title {
+            font-family: 'Cinzel', serif;
+            color: #d4af37;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            font-size: 11px;
+            color: #777;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .status-box {
+            background: #08080c;
+            border: 1px solid #22222e;
+            border-radius: 8px;
+            padding: 14px;
+            text-align: left;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .val { color: #d4af37; font-weight: 600; float: right; }
+        .val-red { color: #ff5252; font-weight: 600; float: right; }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #d4af37, #996515);
+            border: none;
+            border-radius: 6px;
+            color: #000;
+            font-weight: 700;
+            font-family: 'Cinzel', 'Kanit', sans-serif;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+    <div class="casino-panel">
+        <div class="title">THE APEX GAMBIT</div>
+        <div class="subtitle">UNDERGROUND CASINO SANCTUM</div>
+
+        <div class="status-box">
+            <div>ผู้ถือครอง: <span id="user-name" class="val">The Stray</span></div>
+            <div>สถานะชิป: <span id="user-chips" class="val">2,500 CHIPS</span></div>
+            <div>ภาระหนี้สิน: <span id="user-debt" class="val-red">100,000,000 THB</span></div>
+        </div>
+
+        <button class="btn" onclick="gambleRoll()">เดิมพันเสี่ยงดวง (500 Chips) 🎲</button>
+    </div>
+
+    <script>
+        let chips = 2500;
+        let debt = 100000000;
+
+        function gambleRoll() {
+            if (chips < 500) {
+                alert("ชิปไม่พอสำหรับการเดิมพัน!");
+                return;
+            }
+            chips -= 500;
+            const win = Math.random() > 0.45;
+            if (win) {
+                chips += 1200;
+                debt -= 50000;
+                alert("ชนะการเดิมพัน! ได้รับ 1,200 Chips และหักหนี้ 50,000 บาท");
+            } else {
+                alert("แพ้การเดิมพัน! เสียชิป 500 Chips");
+            }
+            document.getElementById('user-chips').textContent = chips.toLocaleString() + ' CHIPS';
+            document.getElementById('user-debt').textContent = Math.max(0, debt).toLocaleString() + ' THB';
+        }
+    </script>
+</body>
+</html>
