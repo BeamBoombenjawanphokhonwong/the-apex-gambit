@@ -3,107 +3,454 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>THE APEX GAMBIT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Kanit:wght@300;600&display=swap" rel="stylesheet">
+    <title>THE APEX GAMBIT - The Sanctum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
         body {
-            background-color: #030305;
-            color: #fff;
+            background-color: #040407;
+            color: #e0e0e0;
             font-family: 'Kanit', sans-serif;
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 14px;
         }
-        .casino-panel {
-            background: rgba(14, 14, 20, 0.95);
-            border: 1px solid #d4af37;
-            border-top: 4px solid #b30000;
-            border-radius: 12px;
+
+        .app-container {
             width: 100%;
-            max-width: 380px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
-        .title {
+
+        /* หัวตารางคาสิโน */
+        .header-card {
+            background: linear-gradient(180deg, rgba(20, 20, 28, 0.95), rgba(10, 10, 15, 0.98));
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-top: 3px solid #b30000;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
+        }
+
+        .title-gold {
             font-family: 'Cinzel', serif;
             color: #d4af37;
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 900;
             letter-spacing: 2px;
-            margin-bottom: 4px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
         }
+
         .subtitle {
-            font-size: 11px;
-            color: #777;
-            margin-bottom: 20px;
+            font-size: 10.5px;
+            color: #888;
             letter-spacing: 1px;
+            margin-top: 2px;
         }
-        .status-box {
-            background: #08080c;
-            border: 1px solid #22222e;
-            border-radius: 8px;
-            padding: 14px;
+
+        /* กล่องสถานะผู้เล่น */
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 14px;
             text-align: left;
-            font-size: 13px;
-            line-height: 1.8;
-            margin-bottom: 20px;
         }
-        .val { color: #d4af37; font-weight: 600; float: right; }
-        .val-red { color: #ff5252; font-weight: 600; float: right; }
-        .btn {
+
+        .status-item {
+            background: #09090e;
+            border: 1px solid #1f1f2e;
+            border-radius: 6px;
+            padding: 8px 10px;
+        }
+
+        .item-label { font-size: 10px; color: #777; }
+        .item-val { font-size: 13px; font-weight: 600; color: #fff; margin-top: 2px; }
+        .val-gold { color: #d4af37; }
+        .val-red { color: #ff5252; }
+
+        /* แถบหลอดหนี้สิน 100M */
+        .debt-bar-box {
+            margin-top: 10px;
+            text-align: left;
+        }
+        .debt-bar-bg {
             width: 100%;
-            padding: 12px;
+            height: 8px;
+            background: #151520;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+            border: 1px solid #2a2a3a;
+        }
+        .debt-bar-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #b30000, #ff5252);
+            transition: width 0.4s ease;
+        }
+
+        /* หมวดเลือกห้องเกม */
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            color: #d4af37;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .room-card {
+            background: #0e0e16;
+            border: 1px solid #28283a;
+            border-left: 4px solid #d4af37;
+            border-radius: 8px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .room-card.locked {
+            border-left-color: #444;
+            opacity: 0.6;
+        }
+
+        .room-info h4 {
+            font-size: 13.5px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .room-info p {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .btn-play {
             background: linear-gradient(135deg, #d4af37, #996515);
             border: none;
             border-radius: 6px;
             color: #000;
+            font-size: 11.5px;
             font-weight: 700;
             font-family: 'Cinzel', 'Kanit', sans-serif;
+            padding: 8px 14px;
             cursor: pointer;
-            margin-top: 8px;
         }
-        .btn:active { transform: scale(0.98); }
+
+        .btn-play:active { transform: scale(0.96); }
+
+        /* ========================
+           โซนกระดานเกม Room 01
+           ======================== */
+        #game-view {
+            display: none;
+            background: #0a0a10;
+            border: 1px solid #d4af37;
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin: 14px 0;
+            background: #050508;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid #222230;
+        }
+
+        .board-tile {
+            aspect-ratio: 1;
+            background: #12121c;
+            border: 1px solid #20202e;
+            border-radius: 4px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: #555;
+        }
+
+        .board-tile.trap { background: rgba(179, 0, 0, 0.2); border-color: #b30000; color: #ff7777; }
+        .board-tile.ladder { background: rgba(212, 175, 55, 0.2); border-color: #d4af37; color: #f1c40f; }
+        .board-tile.active-player {
+            background: #d4af37 !important;
+            color: #000 !important;
+            font-weight: 900;
+            box-shadow: 0 0 10px #d4af37;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            font-family: 'Cinzel', 'Kanit', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-roll { background: linear-gradient(135deg, #d4af37, #996515); color: #000; }
+        .btn-back { background: #1c1c28; color: #aaa; border: 1px solid #333348; }
+
+        .log-box {
+            background: #06060a;
+            border: 1px solid #1a1a24;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 11px;
+            color: #aaa;
+            min-height: 40px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
-    <div class="casino-panel">
-        <div class="title">THE APEX GAMBIT</div>
-        <div class="subtitle">UNDERGROUND CASINO SANCTUM</div>
 
-        <div class="status-box">
-            <div>ผู้ถือครอง: <span id="user-name" class="val">The Stray</span></div>
-            <div>สถานะชิป: <span id="user-chips" class="val">2,500 CHIPS</span></div>
-            <div>ภาระหนี้สิน: <span id="user-debt" class="val-red">100,000,000 THB</span></div>
+<div class="app-container">
+
+    <!-- 1. แผงสถานะผู้เล่นหลัก (Lobby View) -->
+    <div id="lobby-view">
+        <div class="header-card">
+            <div class="title-gold">THE APEX GAMBIT</div>
+            <div class="subtitle">SANCTUM B1 • RESIDENCE OF THE DEBTORS</div>
+
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="item-label">ผู้ถือครอง</div>
+                    <div class="item-val" id="disp-name">The Stray</div>
+                </div>
+                <div class="status-item">
+                    <div class="item-label">ชนชั้นปัจจุบัน</div>
+                    <div class="item-val val-gold" id="disp-role">คนไร้เงา</div>
+                </div>
+                <div class="status-item">
+                    <div class="item-label">ชิปคงเหลือ</div>
+                    <div class="item-val val-gold" id="disp-chips">2,500 🪙</div>
+                </div>
+                <div class="status-item">
+                    <div class="item-label">ภาระหนี้สิน</div>
+                    <div class="item-val val-red" id="disp-debt">100,000,000 ฿</div>
+                </div>
+            </div>
+
+            <div class="debt-bar-box">
+                <div style="display:flex; justify-content:space-between; font-size:10px; color:#888;">
+                    <span>การชำระหนี้</span>
+                    <span id="debt-percent">0.00%</span>
+                </div>
+                <div class="debt-bar-bg">
+                    <div id="debt-fill" class="debt-bar-fill"></div>
+                </div>
+            </div>
         </div>
 
-        <button class="btn" onclick="gambleRoll()">เดิมพันเสี่ยงดวง (500 Chips) 🎲</button>
+        <div class="section-title" style="margin-top: 14px;">♟️ แดนเดิมพัน (CASINO SECTORS)</div>
+
+        <!-- รายการห้อง -->
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+            <!-- ROOM 01 -->
+            <div class="room-card">
+                <div class="room-info">
+                    <h4>ROOM 01: บันไดอสรพิษ (Serpent's Ascent)</h4>
+                    <p>เดิมพัน: 500 Chips | รางวัล: ปลดหนี้ 500,000 ฿</p>
+                </div>
+                <button class="btn-play" onclick="openRoom1()">เข้าเล่น</button>
+            </div>
+
+            <!-- ROOM 02 (LOCKED) -->
+            <div class="room-card locked">
+                <div class="room-info">
+                    <h4>ROOM 02: กลลวงเส้นขนาน (Mirror XO)</h4>
+                    <p>ปลดล็อกเมื่อ: ชำระหนี้ครบ 1,000,000 ฿</p>
+                </div>
+                <span style="font-size: 11px; color: #666; font-family:'Cinzel';">🔒 LOCKED</span>
+            </div>
+
+            <!-- ROOM 03 (LOCKED) -->
+            <div class="room-card locked">
+                <div class="room-info">
+                    <h4>ROOM 03: วงล้อแห่งความเงียบ (Russian Roulette)</h4>
+                    <p>ปลดล็อกเมื่อ: ชนชั้นขยับสู่ The Gambler</p>
+                </div>
+                <span style="font-size: 11px; color: #666; font-family:'Cinzel';">🔒 LOCKED</span>
+            </div>
+        </div>
     </div>
 
-    <script>
-        let chips = 2500;
-        let debt = 100000000;
+    <!-- 2. หน้าจอเล่นเกม ROOM 01 (Game View) -->
+    <div id="game-view">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-family:'Cinzel'; font-size:13px; color:#d4af37;">ROOM 01: SERPENT'S ASCENT</span>
+            <span id="turn-display" style="font-size:11px; color:#888;">ช่องที่: 1 / 30</span>
+        </div>
 
-        function gambleRoll() {
-            if (chips < 500) {
-                alert("ชิปไม่พอสำหรับการเดิมพัน!");
-                return;
-            }
-            chips -= 500;
-            const win = Math.random() > 0.45;
-            if (win) {
-                chips += 1200;
-                debt -= 50000;
-                alert("ชนะการเดิมพัน! ได้รับ 1,200 Chips และหักหนี้ 50,000 บาท");
-            } else {
-                alert("แพ้การเดิมพัน! เสียชิป 500 Chips");
-            }
-            document.getElementById('user-chips').textContent = chips.toLocaleString() + ' CHIPS';
-            document.getElementById('user-debt').textContent = Math.max(0, debt).toLocaleString() + ' THB';
+        <!-- ตารางกระดาน 30 ช่อง -->
+        <div class="board-grid" id="board"></div>
+
+        <div class="log-box" id="game-log">กดทอยเต๋าเพื่อเริ่มเดิมพัน (เดินแต้ม 1-6)</div>
+
+        <div class="game-controls">
+            <button class="btn-action btn-back" onclick="exitToLobby()">⬅️ กลับโถงกลาง</button>
+            <button class="btn-action btn-roll" id="btn-roll" onclick="rollDice()">🎲 ทอยเต๋า (500 🪙)</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ==========================================
+    // ระบบบันทึกข้อมูลถาวร (Save State)
+    // ==========================================
+    const DB_KEY = "APEX_GAMBIT_SAVE_V1";
+    let state = {
+        name: "The Stray",
+        role: "คนไร้เงา",
+        chips: 2500,
+        debt: 100000000,
+        initialDebt: 100000000
+    };
+
+    function loadState() {
+        const raw = localStorage.getItem(DB_KEY);
+        if (raw) state = JSON.parse(raw);
+        updateUI();
+    }
+
+    function saveState() {
+        localStorage.setItem(DB_KEY, JSON.stringify(state));
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('disp-name').textContent = state.name;
+        document.getElementById('disp-role').textContent = state.role;
+        document.getElementById('disp-chips').textContent = state.chips.toLocaleString() + ' 🪙';
+        document.getElementById('disp-debt').textContent = Math.max(0, state.debt).toLocaleString() + ' ฿';
+
+        const paid = state.initialDebt - state.debt;
+        const pct = Math.min(100, (paid / state.initialDebt) * 100).toFixed(2);
+        document.getElementById('debt-percent').textContent = pct + '%';
+        document.getElementById('debt-fill').style.width = (100 - pct) + '%';
+    }
+
+    // ==========================================
+    // ระบบ ROOM 01: บันไดงู (Serpent's Ascent)
+    // ==========================================
+    const TOTAL_TILES = 30;
+    const TRAPS = { 8: 3, 17: 9, 26: 12 };       // ช่องงู: ตกแล้วถอยกลับ
+    const LADDERS = { 5: 14, 15: 22, 20: 27 };  // ช่องบันได: ไต่ขึ้นหน้า
+    let playerPos = 1;
+    let gameActive = false;
+
+    function renderBoard() {
+        const board = document.getElementById('board');
+        board.innerHTML = '';
+        for (let i = 1; i <= TOTAL_TILES; i++) {
+            const tile = document.createElement('div');
+            tile.className = 'board-tile';
+            tile.textContent = i;
+
+            if (TRAPS[i]) tile.className += ' trap';
+            if (LADDERS[i]) tile.className += ' ladder';
+            if (i === playerPos) tile.className += ' active-player';
+
+            board.appendChild(tile);
         }
-    </script>
+        document.getElementById('turn-display').textContent = `ช่องที่: ${playerPos} / 30`;
+    }
+
+    function openRoom1() {
+        if (state.chips < 500) {
+            alert("ชิปไม่เพียงพอ! ต้องการขั้นต่ำ 500 Chips");
+            return;
+        }
+        playerPos = 1;
+        gameActive = true;
+        document.getElementById('lobby-view').style.display = 'none';
+        document.getElementById('game-view').style.display = 'block';
+        document.getElementById('game-log').textContent = "ยินดีต้อนรับสู่บันไดอสรพิษ เดินถึงช่อง 30 เพื่อรับชัยชนะ";
+        renderBoard();
+    }
+
+    function exitToLobby() {
+        document.getElementById('game-view').style.display = 'none';
+        document.getElementById('lobby-view').style.display = 'block';
+        updateUI();
+    }
+
+    function rollDice() {
+        if (!gameActive) return;
+        if (state.chips < 500) {
+            alert("ชิปหมดแล้ว!");
+            return;
+        }
+
+        // หักค่าเดิมพันต่อการทอย
+        state.chips -= 500;
+        const dice = Math.floor(Math.random() * 6) + 1;
+        playerPos += dice;
+        saveState();
+
+        let log = `🎲 ทอยได้ ${dice} แต้ม! เดินไปที่ช่อง ${playerPos}`;
+
+        // ตรวจสอบกับดัก / บันได
+        if (LADDERS[playerPos]) {
+            const next = LADDERS[playerPos];
+            log += ` ➔ ⚜️ พบบันไดทอง! ไต่ขึ้นไปยังช่อง ${next}`;
+            playerPos = next;
+        } else if (TRAPS[playerPos]) {
+            const next = TRAPS[playerPos];
+            log += ` ➔ 🐍 ตกหลุมอสรพิษ! ร่วงหล่นกลับไปช่อง ${next}`;
+            playerPos = next;
+        }
+
+        // ชนะเกม
+        if (playerPos >= TOTAL_TILES) {
+            playerPos = TOTAL_TILES;
+            gameActive = false;
+            const rewardChips = 3000;
+            const rewardDebt = 500000;
+            state.chips += rewardChips;
+            state.debt = Math.max(0, state.debt - rewardDebt);
+
+            if (state.debt <= 95000000) state.role = "The Gambler (นักเสี่ยงโชค)";
+            saveState();
+
+            log = `🏆 ยินดีด้วย! พิชิตบันไดอสรพิษสำเร็จ รับ ${rewardChips} Chips และหักหนี้ ${rewardDebt.toLocaleString()} ฿!`;
+        }
+
+        document.getElementById('game-log').textContent = log;
+        renderBoard();
+    }
+
+    // เริ่มต้นระบบ
+    loadState();
+</script>
+
 </body>
 </html>
